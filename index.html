@@ -670,6 +670,7 @@
     let allResponses = [];
     let currentResultsView = "tendencias";
     let isSubmitting = false;
+    const SURVEY_SESSION_ID = "sesion_2026_05_10";
 
     function generateAnonymousId() {
       return "resp_" + Math.random().toString(36).slice(2, 11) + "_" + Date.now();
@@ -817,7 +818,10 @@
           }))
         };
 
-        const responseRef = window.db.ref(window.db.database, `responses/${respondentId}`);
+        const responseRef = window.db.ref(
+          window.db.database,
+          `responses/${SURVEY_SESSION_ID}/${respondentId}`
+        );
         await window.db.set(responseRef, responseData);
 
         showScreen("screen3");
@@ -849,7 +853,10 @@
       }
 
       try {
-        const responsesRef = window.db.ref(window.db.database, "responses");
+        const responsesRef = window.db.ref(
+          window.db.database,
+          `responses/${SURVEY_SESSION_ID}`
+        );
         const snapshot = await window.db.get(responsesRef);
 
         if (!snapshot.exists()) {
