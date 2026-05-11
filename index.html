@@ -514,20 +514,8 @@ async function loadAndDisplayResults() {
     
     if (snapshot.exists()) {
       const data = snapshot.val();
-      // Convertir objeto en array y eliminar duplicados por respondentId
-      const responsesObj = data;
-      const uniqueResponses = {};
-      
-      for (const key in responsesObj) {
-        const response = responsesObj[key];
-        // Mantener solo la respuesta más reciente por respondentId
-        if (!uniqueResponses[response.respondentId] || 
-            new Date(response.timestamp) > new Date(uniqueResponses[response.respondentId].timestamp)) {
-          uniqueResponses[response.respondentId] = response;
-        }
-      }
-      
-      allResponses = Object.values(uniqueResponses);
+      // Convertir objeto en array - cada entrada es una respuesta única
+      allResponses = Object.values(data);
     } else {
       allResponses = [];
     }
@@ -556,10 +544,11 @@ function displayResults() {
 
 function displayTrendingResults() {
   const trendingContainer = document.getElementById('trendingContainer');
-  trendingContainer.innerHTML = '<div class="card"><h3 style="margin-bottom: 1.5rem;">Principales Tendencias</h3></div>';
+  trendingContainer.innerHTML = '';
   
   const trends = [];
   
+  // Recopilar tendencias para TODAS las preguntas
   questions.forEach((question, qIdx) => {
     const questionResults = calculateQuestionResults(qIdx);
     let maxCount = 0;
@@ -586,8 +575,8 @@ function displayTrendingResults() {
     }
   });
 
-  // Mostrar tendencias ordenadas por porcentaje descendente
-  trends.sort((a, b) => b.percentage - a.percentage);
+  // Ordenar por número de pregunta (1, 2, 3... 21)
+  trends.sort((a, b) => a.questionNum - b.questionNum);
 
   const card = document.createElement('div');
   card.className = 'card';
@@ -613,7 +602,6 @@ function displayTrendingResults() {
     card.appendChild(item);
   });
 
-  trendingContainer.innerHTML = '';
   trendingContainer.appendChild(card);
 }
 
