@@ -206,61 +206,17 @@
   </div>
 </div>
 
-<script type="module">
+<script>
 // ============================================
-// FIREBASE INITIALIZATION
-// ============================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCtp56Ven4Ye5EURPJk3_xTjbwt9Na_ry4",
-  authDomain: "comunicar-en-publico.firebaseapp.com",
-  projectId: "comunicar-en-publico",
-  storageBucket: "comunicar-en-publico.firebasestorage.app",
-  messagingSenderId: "200917486387",
-  appId: "1:200917486387:web:83f3db599b4ef005e34c46"
-};
-
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-
-// ============================================
-// SURVEY DATA
-// ============================================
-const questions = [
-  {
-    text: "¿Cuál es tu mayor temor al hablar en público?",
-    options: ["Olvidar lo que iba a decir", "Ser juzgado por la audiencia", "Cometer errores", "Perder el control"]
-  },
-  {
-    text: "¿Con qué frecuencia hablas en público?",
-    options: ["Nunca", "Raramente", "A veces", "Frecuentemente"]
-  },
-  {
-    text: "¿Has recibido capacitación en oratoria?",
-    options: ["Sí", "No", "Un poco", "Actualmente estoy aprendiendo"]
-  },
-  {
-    text: "¿Qué estrategia te ayuda más a controlar el nerviosismo?",
-    options: ["Preparación y práctica", "Técnicas de respiración", "Visualización positiva", "Apoyo de otros"]
-  },
-  {
-    text: "¿Cuál es tu nivel de confianza para hablar en público?",
-    options: ["Muy bajo", "Bajo", "Medio", "Alto"]
-  }
-];
-
-// ============================================
-// STATE MANAGEMENT
+// STATE MANAGEMENT & FUNCTIONS
 // ============================================
 let currentQuestion = 0;
 let userName = "";
 let answers = [];
+let questions = [];
+let database = null;
 
-// ============================================
 // UI FUNCTIONS
-// ============================================
 function showScreen(screenId) {
   document.querySelectorAll('.screen').forEach(screen => {
     screen.classList.remove('active');
@@ -305,9 +261,7 @@ function selectOption(idx) {
   renderQuestion();
 }
 
-// ============================================
 // SURVEY FLOW FUNCTIONS
-// ============================================
 function startSurvey() {
   userName = document.getElementById('nameInput').value.trim();
   if (!userName) {
@@ -340,9 +294,6 @@ function previousQuestion() {
   }
 }
 
-// ============================================
-// FIREBASE FUNCTIONS
-// ============================================
 async function submitSurvey() {
   try {
     const timestamp = new Date().toISOString();
@@ -357,9 +308,9 @@ async function submitSurvey() {
     };
 
     // Save to Firebase Realtime Database
-    const responsesRef = ref(database, 'responses');
-    const newResponseRef = push(responsesRef);
-    await set(newResponseRef, responseData);
+    const responsesRef = window.db.ref(window.db.database, 'responses');
+    const newResponseRef = window.db.push(responsesRef);
+    await window.db.set(newResponseRef, responseData);
 
     // Show success screen
     document.getElementById('resultName').textContent = userName;
@@ -380,20 +331,62 @@ function resetSurvey() {
   showScreen('screen1');
 }
 
-// ============================================
-// WINDOW FUNCTIONS (for onclick handlers)
-// ============================================
-window.startSurvey = startSurvey;
-window.nextQuestion = nextQuestion;
-window.previousQuestion = previousQuestion;
-window.resetSurvey = resetSurvey;
-
-// ============================================
 // INITIALIZATION
-// ============================================
 document.addEventListener('DOMContentLoaded', () => {
   showScreen('screen1');
 });
+</script>
+
+<script type="module">
+// ============================================
+// FIREBASE INITIALIZATION (Module)
+// ============================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCtp56Ven4Ye5EURPJk3_xTjbwt9Na_ry4",
+  authDomain: "comunicar-en-publico.firebaseapp.com",
+  projectId: "comunicar-en-publico",
+  storageBucket: "comunicar-en-publico.firebasestorage.app",
+  messagingSenderId: "200917486387",
+  appId: "1:200917486387:web:83f3db599b4ef005e34c46"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+// Expose Firebase functions globally
+window.db = { ref, push, set, database };
+
+// ============================================
+// SURVEY DATA
+// ============================================
+window.questions = [
+  {
+    text: "¿Cuál es tu mayor temor al hablar en público?",
+    options: ["Olvidar lo que iba a decir", "Ser juzgado por la audiencia", "Cometer errores", "Perder el control"]
+  },
+  {
+    text: "¿Con qué frecuencia hablas en público?",
+    options: ["Nunca", "Raramente", "A veces", "Frecuentemente"]
+  },
+  {
+    text: "¿Has recibido capacitación en oratoria?",
+    options: ["Sí", "No", "Un poco", "Actualmente estoy aprendiendo"]
+  },
+  {
+    text: "¿Qué estrategia te ayuda más a controlar el nerviosismo?",
+    options: ["Preparación y práctica", "Técnicas de respiración", "Visualización positiva", "Apoyo de otros"]
+  },
+  {
+    text: "¿Cuál es tu nivel de confianza para hablar en público?",
+    options: ["Muy bajo", "Bajo", "Medio", "Alto"]
+  }
+];
+
+// Initialize questions
+questions = window.questions;
 </script>
 
 </body>
