@@ -12,7 +12,6 @@
     <!-- TODO el código JavaScript con la inicialización de Firebase va aquí -->
     <script type="module">
         // Importa las funciones que necesitas del SDK de Firebase desde el CDN
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
         // Si usas Firestore:
         // import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
         // Si usas Autenticación:
@@ -29,8 +28,6 @@
         };
 
         // Inicializa Firebase
-        const app = initializeApp(firebaseConfig);
-
         // Actualiza el estado en la página, ahora que el elemento 'firebase-status' existe
         document.getElementById('firebase-status').innerText = 'Firebase ha sido inicializado con éxito.';
         console.log("¡Firebase app inicializada!", app);
@@ -365,8 +362,7 @@
 </div><!-- /page -->
 
 <script type="module">
-  import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
+    import {
     getFirestore, collection, addDoc,
     onSnapshot, query, orderBy,
     deleteDoc, getDocs, serverTimestamp
@@ -426,8 +422,7 @@
      Inicializar Firebase
   ══════════════════════════════════════ */
   try {
-    const app = initializeApp(firebaseConfig);
-    db     = getFirestore(app);
+      db     = getFirestore(app);
     colRef = collection(db, "respuestas");
   } catch (e) {
     console.error("Error inicializando Firebase:", e);
