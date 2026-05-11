@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Presentaciones Efectivas — Temores al hablar en público</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   :root {
     --bg: #F7F5F0;
@@ -33,14 +34,19 @@
     font-size: 15px;
     line-height: 1.6;
   }
-  .page { max-width: 640px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .page { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
 
   .site-header {
     text-align: center;
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
     border-bottom: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
+  .site-header .header-left { flex: 1; text-align: left; }
+  .site-header .header-center { flex: 1; text-align: center; }
   .site-header .eyebrow {
     font-size: 11px;
     letter-spacing: 0.12em;
@@ -56,6 +62,19 @@
     line-height: 1.2;
   }
   .site-header .sub { font-size: 13px; color: var(--text2); margin-top: 0.5rem; }
+  .tab-buttons { display: flex; gap: 8px; }
+  .tab-btn {
+    background: transparent;
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tab-btn:hover { background: var(--surface2); }
 
   .screen { display: none; }
   .screen.active { display: block; animation: fadeUp 0.3s ease; }
@@ -150,41 +169,91 @@
 
   .msg-ok { font-size: 13px; color: var(--success); background: var(--success-bg); padding: 10px 12px; border-radius: var(--radius); margin-bottom: 1rem; }
   .msg-err { font-size: 13px; color: #A62C2C; background: #FDE8E8; padding: 10px 12px; border-radius: var(--radius); margin-bottom: 1rem; }
+
+  /* Results Dashboard */
+  .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+  @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
+  
+  .stat-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .stat-number { font-size: 32px; font-weight: 500; color: var(--accent); margin: 0.5rem 0; }
+  .stat-label { font-size: 13px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .chart-container {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .chart-title { font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: var(--text); }
+  .chart-wrapper { position: relative; height: 300px; margin-bottom: 1rem; }
+
+  .question-results {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .result-question { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 1rem; }
+  .result-bar { display: flex; align-items: center; margin-bottom: 0.75rem; }
+  .result-label { font-size: 13px; color: var(--text2); min-width: 120px; }
+  .result-progress { flex: 1; height: 24px; background: var(--surface2); border-radius: 4px; margin: 0 1rem; position: relative; overflow: hidden; }
+  .result-fill { height: 100%; background: var(--accent); border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+  .result-fill span { font-size: 11px; font-weight: 500; color: #fff; }
+  .result-count { font-size: 13px; color: var(--text2); min-width: 40px; text-align: right; }
+
+  .loading { text-align: center; padding: 2rem; }
+  .spinner { display: inline-block; width: 30px; height: 30px; border: 3px solid var(--surface2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
 <div class="page">
   <div class="site-header">
-    <div class="eyebrow">Encuesta</div>
-    <h1>Presentaciones Efectivas</h1>
-    <div class="sub">Temores al hablar en público</div>
+    <div class="header-center">
+      <div class="eyebrow">Encuesta Anónima</div>
+      <h1>Presentaciones Efectivas</h1>
+      <div class="sub">Temores al hablar en público</div>
+    </div>
+    <div class="tab-buttons" id="tabButtons" style="display: none;">
+      <button class="tab-btn active" onclick="switchTab('survey')">Encuesta</button>
+      <button class="tab-btn" onclick="switchTab('results')">Resultados</button>
+    </div>
   </div>
 
-  <!-- Screen 1: Name Input -->
+  <!-- Screen 1: Survey Start -->
   <div class="screen active" id="screen1">
     <div class="card">
-      <h2>¿Cuál es tu nombre?</h2>
-      <label class="field-label">Nombre completo</label>
-      <input type="text" id="nameInput" placeholder="Tu nombre aquí">
+      <h2>Encuesta Anónima</h2>
+      <p>Esta encuesta es completamente anónima. Tus respuestas nos ayudarán a entender mejor los temores al hablar en público y a mejorar las estrategias de comunicación efectiva.</p>
+      <p style="margin-top: 1rem; color: var(--text3); font-size: 13px;">⏱️ Tiempo estimado: 5-7 minutos</p>
       <button class="btn-primary" onclick="startSurvey()" style="margin-top: 1.5rem;">Comenzar Encuesta</button>
+      <button class="btn-secondary" onclick="switchTab('results')" style="width: 100%; margin-top: 0.75rem;">Ver Resultados</button>
     </div>
   </div>
 
   <!-- Screen 2: Survey Questions -->
   <div class="screen" id="screen2">
     <div class="progress-wrap">
-      <div class="progress-label">Progreso: <span id="progressText">1/5</span></div>
+      <div class="progress-label">Progreso: <span id="progressText">1/21</span></div>
       <div class="progress-track">
-        <div class="progress-fill" id="progressFill" style="width: 20%;"></div>
+        <div class="progress-fill" id="progressFill" style="width: 5%;"></div>
       </div>
     </div>
 
     <div id="messageContainer"></div>
 
     <div class="card">
-      <div class="q-number" id="qNumber">Pregunta 1 de 5</div>
-      <div class="q-text" id="qText">¿Cuál es tu mayor temor al hablar en público?</div>
+      <div class="q-number" id="qNumber">Pregunta 1 de 21</div>
+      <div class="q-text" id="qText"></div>
       <div class="opts" id="optsContainer"></div>
     </div>
 
@@ -194,27 +263,56 @@
     </div>
   </div>
 
-  <!-- Screen 3: Results -->
+  <!-- Screen 3: Success -->
   <div class="screen" id="screen3">
     <div class="card">
-      <h2>¡Gracias, <span id="resultName"></span>!</h2>
-      <p>Tu respuesta ha sido registrada exitosamente.</p>
+      <h2>¡Gracias!</h2>
+      <p>Tu respuesta ha sido registrada exitosamente de forma anónima.</p>
       <div style="margin-top: 1.5rem;">
-        <button class="btn-primary" onclick="resetSurvey()">Hacer otra encuesta</button>
+        <button class="btn-primary" onclick="goToResults()">Ver Resultados Grupales</button>
+        <button class="btn-secondary" onclick="resetSurvey()" style="width: 100%; margin-top: 0.75rem;">Hacer otra encuesta</button>
       </div>
     </div>
+  </div>
+
+  <!-- Screen 4: Results Dashboard -->
+  <div class="screen" id="screen4">
+    <div class="card">
+      <h2>Resultados de la Encuesta</h2>
+      <button class="btn-secondary" onclick="switchTab('survey')" style="margin-top: 0.5rem;">← Volver a Encuesta</button>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total de Respuestas</div>
+        <div class="stat-number" id="totalResponses">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Última Actualización</div>
+        <div class="stat-number" style="font-size: 14px;" id="lastUpdate">-</div>
+      </div>
+    </div>
+
+    <div id="chartsContainer"></div>
+    <div id="resultsContainer"></div>
   </div>
 </div>
 
 <script>
 // ============================================
-// STATE MANAGEMENT & FUNCTIONS
+// STATE MANAGEMENT
 // ============================================
 let currentQuestion = 0;
-let userName = "";
 let answers = [];
 let questions = [];
 let database = null;
+let respondentId = '';
+let allResponses = [];
+
+// GENERATE ANONYMOUS ID
+function generateAnonymousId() {
+  return 'resp_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+}
 
 // UI FUNCTIONS
 function showScreen(screenId) {
@@ -222,6 +320,17 @@ function showScreen(screenId) {
     screen.classList.remove('active');
   });
   document.getElementById(screenId).classList.add('active');
+}
+
+function switchTab(tab) {
+  if (tab === 'survey') {
+    showScreen('screen1');
+    document.getElementById('tabButtons').style.display = 'none';
+  } else if (tab === 'results') {
+    showScreen('screen4');
+    document.getElementById('tabButtons').style.display = 'flex';
+    loadAndDisplayResults();
+  }
 }
 
 function showMessage(text, type = 'ok') {
@@ -263,11 +372,7 @@ function selectOption(idx) {
 
 // SURVEY FLOW FUNCTIONS
 function startSurvey() {
-  userName = document.getElementById('nameInput').value.trim();
-  if (!userName) {
-    alert('Por favor ingresa tu nombre');
-    return;
-  }
+  respondentId = generateAnonymousId();
   currentQuestion = 0;
   answers = [];
   showScreen('screen2');
@@ -298,12 +403,13 @@ async function submitSurvey() {
   try {
     const timestamp = new Date().toISOString();
     const responseData = {
-      name: userName,
+      respondentId: respondentId,
       timestamp: timestamp,
       answers: answers.map((idx, qIdx) => ({
+        questionId: qIdx + 1,
         question: questions[qIdx].text,
-        answer: questions[qIdx].options[idx],
-        answerIndex: idx
+        answerIndex: idx,
+        answer: questions[qIdx].options[idx]
       }))
     };
 
@@ -312,8 +418,6 @@ async function submitSurvey() {
     const newResponseRef = window.db.push(responsesRef);
     await window.db.set(newResponseRef, responseData);
 
-    // Show success screen
-    document.getElementById('resultName').textContent = userName;
     showScreen('screen3');
     showMessage('¡Encuesta guardada exitosamente!', 'ok');
 
@@ -323,12 +427,94 @@ async function submitSurvey() {
   }
 }
 
+function goToResults() {
+  switchTab('results');
+}
+
 function resetSurvey() {
   currentQuestion = 0;
   answers = [];
-  userName = "";
-  document.getElementById('nameInput').value = '';
+  respondentId = '';
   showScreen('screen1');
+  document.getElementById('tabButtons').style.display = 'none';
+}
+
+// RESULTS FUNCTIONS
+async function loadAndDisplayResults() {
+  try {
+    const responsesRef = window.db.ref(window.db.database, 'responses');
+    const snapshot = await window.db.get(responsesRef);
+    
+    if (snapshot.exists()) {
+      allResponses = Object.values(snapshot.val());
+    } else {
+      allResponses = [];
+    }
+
+    displayResults();
+  } catch (error) {
+    console.error('Error al cargar resultados:', error);
+    document.getElementById('chartsContainer').innerHTML = '<div class="card"><p>Error al cargar los resultados. Intenta más tarde.</p></div>';
+  }
+}
+
+function displayResults() {
+  document.getElementById('totalResponses').textContent = allResponses.length;
+  document.getElementById('lastUpdate').textContent = allResponses.length > 0 
+    ? new Date(allResponses[allResponses.length - 1].timestamp).toLocaleString('es-ES', { 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      })
+    : 'Sin datos';
+
+  const resultsContainer = document.getElementById('resultsContainer');
+  resultsContainer.innerHTML = '';
+
+  questions.forEach((question, qIdx) => {
+    const questionResults = calculateQuestionResults(qIdx);
+    const resultDiv = document.createElement('div');
+    resultDiv.className = 'question-results';
+    
+    let resultsHTML = `<div class="result-question">P${qIdx + 1}. ${question.text}</div>`;
+    
+    question.options.forEach((option, optIdx) => {
+      const count = questionResults[optIdx] || 0;
+      const percentage = allResponses.length > 0 ? Math.round((count / allResponses.length) * 100) : 0;
+      
+      resultsHTML += `
+        <div class="result-bar">
+          <div class="result-label">${option}</div>
+          <div class="result-progress">
+            <div class="result-fill" style="width: ${percentage}%">
+              ${percentage > 10 ? `<span>${percentage}%</span>` : ''}
+            </div>
+          </div>
+          <div class="result-count">${count}</div>
+        </div>
+      `;
+    });
+    
+    resultDiv.innerHTML = resultsHTML;
+    resultsContainer.appendChild(resultDiv);
+  });
+}
+
+function calculateQuestionResults(questionIdx) {
+  const results = {};
+  questions[questionIdx].options.forEach((_, optIdx) => {
+    results[optIdx] = 0;
+  });
+
+  allResponses.forEach(response => {
+    const answer = response.answers.find(a => a.questionId === questionIdx + 1);
+    if (answer) {
+      results[answer.answerIndex]++;
+    }
+  });
+
+  return results;
 }
 
 // INITIALIZATION
@@ -339,10 +525,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script type="module">
 // ============================================
-// FIREBASE INITIALIZATION (Module)
+// FIREBASE INITIALIZATION
 // ============================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { getDatabase, ref, push, set, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCtp56Ven4Ye5EURPJk3_xTjbwt9Na_ry4",
@@ -357,31 +543,95 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 // Expose Firebase functions globally
-window.db = { ref, push, set, database };
+window.db = { ref, push, set, get, database };
 
 // ============================================
-// SURVEY DATA
+// SURVEY QUESTIONS (21 preguntas)
 // ============================================
 window.questions = [
   {
-    text: "¿Cuál es tu mayor temor al hablar en público?",
-    options: ["Olvidar lo que iba a decir", "Ser juzgado por la audiencia", "Cometer errores", "Perder el control"]
+    text: "1. Me pongo muy ansioso/a cuando hablo frente a un pequeño grupo (de tres a diez personas)",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
   },
   {
-    text: "¿Con qué frecuencia hablas en público?",
-    options: ["Nunca", "Raramente", "A veces", "Frecuentemente"]
+    text: "2. Me preocupo cuando tengo que hablar con extraños",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
   },
   {
-    text: "¿Has recibido capacitación en oratoria?",
-    options: ["Sí", "No", "Un poco", "Actualmente estoy aprendiendo"]
+    text: "3. Mi corazón se acelera cuando pienso que tengo que hablar frente a otros",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
   },
   {
-    text: "¿Qué estrategia te ayuda más a controlar el nerviosismo?",
-    options: ["Preparación y práctica", "Técnicas de respiración", "Visualización positiva", "Apoyo de otros"]
+    text: "4. Por lo general me pongo nervioso/a cuando hablo con mi jefe o con alguien de autoridad",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
   },
   {
-    text: "¿Cuál es tu nivel de confianza para hablar en público?",
-    options: ["Muy bajo", "Bajo", "Medio", "Alto"]
+    text: "5. La mayor parte del tiempo evito dar un discurso o una presentación",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "6. Me avergüenza cuando otros me observan al hablar",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "7. Con frecuencia evito contar historias a grupos en fiestas y otras reuniones sociales",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "8. No me ofrezco como voluntaria/o para dar una presentación",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "9. Me preocupa que mi voz pueda sonar extraña o de que pueda temblar cuando esté hablando en público",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "10. No hablaría en público a menos que sea absolutamente necesario",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "11. Me preocupa que vaya a olvidar lo que debo decir durante una presentación",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "12. He tenido consecuencias negativas en el trabajo/en los estudios como no obtener un ascenso o puntos a mi favor debido a que evito hablar en público",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "13. Enfrentar a una gran audiencia es uno de mis más grandes temores",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "14. Cuando hablo pienso con certeza que otras personas me están evaluando negativamente",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "15. Trato de evitar contestar preguntas cuando estoy haciendo una presentación",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "16. Por lo general, no hablo en reuniones",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "17. Si no estoy 100% seguro/a de una respuesta, no digo nada",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "18. Cuando hablo en público, pienso que con seguridad voy a hacer el ridículo o que la gente me perderá el respeto",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "19. Cuando me dirijo a un grupo, por lo general, siento que cambia mi temperatura corporal, percibo una presión en el estómago, sudo o me ruborizo",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "20. Pienso que es mejor si evito hablar en público para que la gente no note mi nerviosismo",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+  },
+  {
+    text: "21. Considero que no poseo los habilidades requeridas para dirigirme a un público de manera efectiva",
+    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
   }
 ];
 
