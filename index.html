@@ -206,25 +206,24 @@
   </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
+<script type="module">
+// ============================================
+// FIREBASE INITIALIZATION
+// ============================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-<script>
-// ============================================
-// FIREBASE CONFIGURATION
-// ============================================
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCtp56Ven4Ye5EURPJk3_xTjbwt9Na_ry4",
+  authDomain: "comunicar-en-publico.firebaseapp.com",
+  projectId: "comunicar-en-publico",
+  storageBucket: "comunicar-en-publico.firebasestorage.app",
+  messagingSenderId: "200917486387",
+  appId: "1:200917486387:web:83f3db599b4ef005e34c46"
 };
 
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
 // ============================================
 // SURVEY DATA
@@ -358,8 +357,9 @@ async function submitSurvey() {
     };
 
     // Save to Firebase Realtime Database
-    const newResponseRef = database.ref('responses').push();
-    await newResponseRef.set(responseData);
+    const responsesRef = ref(database, 'responses');
+    const newResponseRef = push(responsesRef);
+    await set(newResponseRef, responseData);
 
     // Show success screen
     document.getElementById('resultName').textContent = userName;
@@ -379,6 +379,14 @@ function resetSurvey() {
   document.getElementById('nameInput').value = '';
   showScreen('screen1');
 }
+
+// ============================================
+// WINDOW FUNCTIONS (for onclick handlers)
+// ============================================
+window.startSurvey = startSurvey;
+window.nextQuestion = nextQuestion;
+window.previousQuestion = previousQuestion;
+window.resetSurvey = resetSurvey;
 
 // ============================================
 // INITIALIZATION
