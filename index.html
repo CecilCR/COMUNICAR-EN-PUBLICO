@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -669,6 +670,7 @@
     let respondentId = "";
     let allResponses = [];
     let currentResultsView = "tendencias";
+    let isSubmitting = false;
 
     function generateAnonymousId() {
       return "resp_" + Math.random().toString(36).slice(2, 11) + "_" + Date.now();
@@ -763,6 +765,7 @@
       respondentId = generateAnonymousId();
       currentQuestion = 0;
       answers = [];
+      isSubmitting = false;
       showScreen("screen2");
       renderQuestion();
     }
@@ -790,15 +793,21 @@
     }
 
     async function submitSurvey() {
+      if (isSubmitting) {
+        return;
+      }
+
       if (!window.db) {
         showMessage("Firebase todavía está cargando. Intenta nuevamente en unos segundos.", "err");
         return;
       }
 
       try {
+        isSubmitting = true;
         document.getElementById("nextBtn").disabled = true;
 
         const responseData = {
+          schemaVersion: 2,
           respondentId,
           timestamp: new Date().toISOString(),
           answers: answers.map((answerIndex, questionIndex) => ({
@@ -809,13 +818,13 @@
           }))
         };
 
-        const responsesRef = window.db.ref(window.db.database, "responses");
-        const newResponseRef = window.db.push(responsesRef);
-        await window.db.set(newResponseRef, responseData);
+        const responseRef = window.db.ref(window.db.database, `responses/${respondentId}`);
+        await window.db.set(responseRef, responseData);
 
         showScreen("screen3");
       } catch (error) {
         console.error("Error al guardar la encuesta:", error);
+        isSubmitting = false;
         showMessage("Error al guardar. Intenta de nuevo.", "err");
         renderQuestion();
       }
@@ -829,6 +838,7 @@
       currentQuestion = 0;
       answers = [];
       respondentId = "";
+      isSubmitting = false;
       showScreen("screen1");
       document.getElementById("tabButtons").style.display = "none";
     }
@@ -869,6 +879,7 @@
 
     function isValidCompletedResponse(response) {
       if (!response || typeof response !== "object") return false;
+      if (response.schemaVersion !== 2) return false;
       if (!response.respondentId || typeof response.respondentId !== "string") return false;
       if (!response.timestamp || Number.isNaN(new Date(response.timestamp).getTime())) return false;
       if (!Array.isArray(response.answers) || response.answers.length !== QUESTIONS.length) return false;
