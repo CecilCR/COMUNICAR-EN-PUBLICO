@@ -17,10 +17,15 @@
     --accent: #1D4E8F;
     --accent-light: #E8EFF9;
     --accent-mid: #3A72C8;
+    --accent-dark: #0F3B6F;
     --border: rgba(26,24,20,0.10);
     --border2: rgba(26,24,20,0.18);
     --success: #2D6A4F;
     --success-bg: #EAF5EE;
+    --warning: #D97706;
+    --warning-bg: #FEF3C7;
+    --danger: #DC2626;
+    --danger-bg: #FEE2E2;
     --radius: 10px;
     --radius-lg: 16px;
   }
@@ -34,7 +39,7 @@
     font-size: 15px;
     line-height: 1.6;
   }
-  .page { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .page { max-width: 1000px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
 
   .site-header {
     text-align: center;
@@ -184,15 +189,19 @@
   .stat-number { font-size: 32px; font-weight: 500; color: var(--accent); margin: 0.5rem 0; }
   .stat-label { font-size: 13px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; }
 
-  .chart-container {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+  .view-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+  .view-tab {
+    background: transparent;
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    font-size: 14px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.2s;
   }
-  .chart-title { font-size: 16px; font-weight: 500; margin-bottom: 1rem; color: var(--text); }
-  .chart-wrapper { position: relative; height: 300px; margin-bottom: 1rem; }
+  .view-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .view-tab:hover { background: var(--surface2); }
 
   .question-results {
     background: var(--surface);
@@ -209,9 +218,47 @@
   .result-fill span { font-size: 11px; font-weight: 500; color: #fff; }
   .result-count { font-size: 13px; color: var(--text2); min-width: 40px; text-align: right; }
 
+  .trending-item {
+    background: var(--surface);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .trending-item.high-agreement { border-left-color: var(--danger); }
+  .trending-item.medium-agreement { border-left-color: var(--warning); }
+  .trending-item.low-agreement { border-left-color: var(--success); }
+  
+  .trending-content { flex: 1; }
+  .trending-question { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 0.25rem; }
+  .trending-answer { font-size: 13px; color: var(--text2); }
+  .trending-stats {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  .trending-percent {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--accent);
+    min-width: 50px;
+    text-align: right;
+  }
+  .trending-count {
+    font-size: 12px;
+    color: var(--text3);
+    text-align: right;
+    min-width: 40px;
+  }
+
   .loading { text-align: center; padding: 2rem; }
   .spinner { display: inline-block; width: 30px; height: 30px; border: 3px solid var(--surface2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  .highlight { background: var(--accent-light); border-radius: 4px; padding: 0.25rem 0.5rem; color: var(--accent); font-weight: 500; }
 </style>
 </head>
 <body>
@@ -293,8 +340,13 @@
       </div>
     </div>
 
-    <div id="chartsContainer"></div>
-    <div id="resultsContainer"></div>
+    <div class="view-tabs">
+      <button class="view-tab active" onclick="switchResultsView('tendencias')">📊 Tendencias</button>
+      <button class="view-tab" onclick="switchResultsView('completo')">📈 Detalle Completo</button>
+    </div>
+
+    <div id="trendingContainer" style="display: block;"></div>
+    <div id="resultsContainer" style="display: none;"></div>
   </div>
 </div>
 
@@ -308,6 +360,7 @@ let questions = [];
 let database = null;
 let respondentId = '';
 let allResponses = [];
+let currentResultsView = 'tendencias';
 
 // GENERATE ANONYMOUS ID
 function generateAnonymousId() {
@@ -330,6 +383,20 @@ function switchTab(tab) {
     showScreen('screen4');
     document.getElementById('tabButtons').style.display = 'flex';
     loadAndDisplayResults();
+  }
+}
+
+function switchResultsView(view) {
+  currentResultsView = view;
+  document.querySelectorAll('.view-tab').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  if (view === 'tendencias') {
+    document.getElementById('trendingContainer').style.display = 'block';
+    document.getElementById('resultsContainer').style.display = 'none';
+  } else {
+    document.getElementById('trendingContainer').style.display = 'none';
+    document.getElementById('resultsContainer').style.display = 'block';
   }
 }
 
@@ -446,7 +513,21 @@ async function loadAndDisplayResults() {
     const snapshot = await window.db.get(responsesRef);
     
     if (snapshot.exists()) {
-      allResponses = Object.values(snapshot.val());
+      const data = snapshot.val();
+      // Convertir objeto en array y eliminar duplicados por respondentId
+      const responsesObj = data;
+      const uniqueResponses = {};
+      
+      for (const key in responsesObj) {
+        const response = responsesObj[key];
+        // Mantener solo la respuesta más reciente por respondentId
+        if (!uniqueResponses[response.respondentId] || 
+            new Date(response.timestamp) > new Date(uniqueResponses[response.respondentId].timestamp)) {
+          uniqueResponses[response.respondentId] = response;
+        }
+      }
+      
+      allResponses = Object.values(uniqueResponses);
     } else {
       allResponses = [];
     }
@@ -454,7 +535,7 @@ async function loadAndDisplayResults() {
     displayResults();
   } catch (error) {
     console.error('Error al cargar resultados:', error);
-    document.getElementById('chartsContainer').innerHTML = '<div class="card"><p>Error al cargar los resultados. Intenta más tarde.</p></div>';
+    document.getElementById('trendingContainer').innerHTML = '<div class="card"><p>Error al cargar los resultados. Intenta más tarde.</p></div>';
   }
 }
 
@@ -469,6 +550,74 @@ function displayResults() {
       })
     : 'Sin datos';
 
+  displayTrendingResults();
+  displayDetailedResults();
+}
+
+function displayTrendingResults() {
+  const trendingContainer = document.getElementById('trendingContainer');
+  trendingContainer.innerHTML = '<div class="card"><h3 style="margin-bottom: 1.5rem;">Principales Tendencias</h3></div>';
+  
+  const trends = [];
+  
+  questions.forEach((question, qIdx) => {
+    const questionResults = calculateQuestionResults(qIdx);
+    let maxCount = 0;
+    let maxIdx = 0;
+    
+    question.options.forEach((_, optIdx) => {
+      const count = questionResults[optIdx] || 0;
+      if (count > maxCount) {
+        maxCount = count;
+        maxIdx = optIdx;
+      }
+    });
+    
+    if (maxCount > 0) {
+      const percentage = Math.round((maxCount / allResponses.length) * 100);
+      trends.push({
+        questionNum: qIdx + 1,
+        question: question.text,
+        answer: question.options[maxIdx],
+        count: maxCount,
+        percentage: percentage,
+        isAgreement: maxIdx >= 3 // Si está en "De acuerdo" o "Totalmente de acuerdo"
+      });
+    }
+  });
+
+  // Mostrar tendencias ordenadas por porcentaje descendente
+  trends.sort((a, b) => b.percentage - a.percentage);
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = '<h3 style="margin-bottom: 1.5rem; font-family: DM Serif Display; font-size: 18px;">Respuestas Más Comunes</h3>';
+  
+  trends.forEach(trend => {
+    const agreementClass = trend.isAgreement ? 'high-agreement' : (trend.percentage > 50 ? 'medium-agreement' : 'low-agreement');
+    
+    const item = document.createElement('div');
+    item.className = `trending-item ${agreementClass}`;
+    item.innerHTML = `
+      <div class="trending-content">
+        <div class="trending-question">P${trend.questionNum}. ${trend.question.substring(0, 60)}...</div>
+        <div class="trending-answer"><span class="highlight">${trend.answer}</span></div>
+      </div>
+      <div class="trending-stats">
+        <div>
+          <div class="trending-percent">${trend.percentage}%</div>
+          <div class="trending-count">${trend.count} ${trend.count === 1 ? 'resp.' : 'resps.'}</div>
+        </div>
+      </div>
+    `;
+    card.appendChild(item);
+  });
+
+  trendingContainer.innerHTML = '';
+  trendingContainer.appendChild(card);
+}
+
+function displayDetailedResults() {
   const resultsContainer = document.getElementById('resultsContainer');
   resultsContainer.innerHTML = '';
 
@@ -508,9 +657,11 @@ function calculateQuestionResults(questionIdx) {
   });
 
   allResponses.forEach(response => {
-    const answer = response.answers.find(a => a.questionId === questionIdx + 1);
-    if (answer) {
-      results[answer.answerIndex]++;
+    if (response.answers && Array.isArray(response.answers)) {
+      const answer = response.answers.find(a => a.questionId === questionIdx + 1);
+      if (answer !== undefined) {
+        results[answer.answerIndex]++;
+      }
     }
   });
 
