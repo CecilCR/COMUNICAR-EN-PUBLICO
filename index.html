@@ -1,782 +1,1043 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Presentaciones Efectivas — Temores al hablar en público</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-  :root {
-    --bg: #F7F5F0;
-    --surface: #FFFFFF;
-    --surface2: #F0EDE6;
-    --text: #1A1814;
-    --text2: #6B6860;
-    --text3: #A09D97;
-    --accent: #1D4E8F;
-    --accent-light: #E8EFF9;
-    --accent-mid: #3A72C8;
-    --accent-dark: #0F3B6F;
-    --border: rgba(26,24,20,0.10);
-    --border2: rgba(26,24,20,0.18);
-    --success: #2D6A4F;
-    --success-bg: #EAF5EE;
-    --warning: #D97706;
-    --warning-bg: #FEF3C7;
-    --danger: #DC2626;
-    --danger-bg: #FEE2E2;
-    --radius: 10px;
-    --radius-lg: 16px;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.6;
-  }
-  .page { max-width: 1000px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentaciones Efectivas - Temores al hablar en público</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F7F5F0;
+      --surface: #FFFFFF;
+      --surface2: #F0EDE6;
+      --text: #1A1814;
+      --text2: #6B6860;
+      --text3: #A09D97;
+      --accent: #1D4E8F;
+      --accent-light: #E8EFF9;
+      --accent-mid: #3A72C8;
+      --border: rgba(26,24,20,0.10);
+      --border2: rgba(26,24,20,0.18);
+      --success: #2D6A4F;
+      --success-bg: #EAF5EE;
+      --danger: #DC2626;
+      --radius: 10px;
+      --radius-lg: 16px;
+    }
 
-  .site-header {
-    text-align: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 0.5px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .site-header .header-left { flex: 1; text-align: left; }
-  .site-header .header-center { flex: 1; text-align: center; }
-  .site-header .eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 0.5rem;
-  }
-  .site-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    font-weight: 400;
-    color: var(--text);
-    line-height: 1.2;
-  }
-  .site-header .sub { font-size: 13px; color: var(--text2); margin-top: 0.5rem; }
-  .tab-buttons { display: flex; gap: 8px; }
-  .tab-btn {
-    background: transparent;
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 8px 16px;
-    font-size: 13px;
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .tab-btn:hover { background: var(--surface2); }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .screen { display: none; }
-  .screen.active { display: block; animation: fadeUp 0.3s ease; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  .card {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  .card h2 { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; margin-bottom: 0.75rem; }
-  .card p { font-size: 14px; color: var(--text2); line-height: 1.7; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.6;
+    }
 
-  label.field-label { display: block; font-size: 13px; color: var(--text2); margin-bottom: 6px; }
-  input[type="text"] {
-    width: 100%; padding: 10px 14px;
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    background: var(--bg);
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  input[type="text"]:focus { border-color: var(--accent); background: var(--surface); }
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
 
-  .btn-primary {
-    display: block; width: 100%;
-    background: var(--accent); color: #fff;
-    border: none; border-radius: var(--radius);
-    padding: 13px 20px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px; font-weight: 500;
-    cursor: pointer; text-align: center;
-    transition: opacity 0.15s, transform 0.1s;
-  }
-  .btn-primary:hover { opacity: 0.9; }
-  .btn-primary:active { transform: scale(0.98); }
-  .btn-primary:disabled { opacity: 0.4; cursor: default; }
-  .btn-secondary {
-    display: inline-block;
-    background: transparent;
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 10px 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; color: var(--text2);
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .btn-secondary:hover { background: var(--surface2); }
-  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1.25rem; }
+    .site-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
 
-  .progress-wrap { margin-bottom: 1.5rem; }
-  .progress-track { height: 3px; background: var(--surface2); border-radius: 2px; }
-  .progress-fill { height: 3px; background: var(--accent); border-radius: 2px; transition: width 0.35s ease; }
-  .progress-label { font-size: 12px; color: var(--text3); margin-bottom: 8px; }
+    .header-center {
+      flex: 1;
+      text-align: center;
+    }
 
-  .q-number { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-  .q-text { font-size: 16px; color: var(--text); line-height: 1.55; margin-bottom: 1.5rem; }
-  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.5rem; }
-  .opt {
-    background: var(--surface);
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 12px 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px; color: var(--text2);
-    cursor: pointer; text-align: center;
-    transition: all 0.15s; line-height: 1.3;
-  }
-  .opt:hover { border-color: var(--accent-mid); color: var(--text); background: var(--accent-light); }
-  .opt.sel { border-color: var(--accent); background: var(--accent-light); color: var(--accent); font-weight: 500; }
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 0.5rem;
+    }
 
-  .nav-row { display: flex; gap: 10px; }
-  .nav-btn {
-    flex: 1; background: transparent;
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 11px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; color: var(--text);
-    cursor: pointer; transition: background 0.15s;
-  }
-  .nav-btn:hover { background: var(--surface2); }
-  .nav-btn.fwd { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .nav-btn.fwd:hover { opacity: 0.9; }
-  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
 
-  .msg-ok { font-size: 13px; color: var(--success); background: var(--success-bg); padding: 10px 12px; border-radius: var(--radius); margin-bottom: 1rem; }
-  .msg-err { font-size: 13px; color: #A62C2C; background: #FDE8E8; padding: 10px 12px; border-radius: var(--radius); margin-bottom: 1rem; }
+    .sub {
+      font-size: 13px;
+      color: var(--text2);
+      margin-top: 0.5rem;
+    }
 
-  /* Results Dashboard */
-  .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
-  @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
-  
-  .stat-card {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    text-align: center;
-  }
-  .stat-number { font-size: 32px; font-weight: 500; color: var(--accent); margin: 0.5rem 0; }
-  .stat-label { font-size: 13px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; }
+    .tab-buttons,
+    .view-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-  .view-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; }
-  .view-tab {
-    background: transparent;
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 10px 16px;
-    font-size: 14px;
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .view-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .view-tab:hover { background: var(--surface2); }
+    button {
+      font-family: 'DM Sans', sans-serif;
+    }
 
-  .question-results {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .result-question { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 1rem; }
-  .result-bar { display: flex; align-items: center; margin-bottom: 0.75rem; }
-  .result-label { font-size: 13px; color: var(--text2); min-width: 120px; }
-  .result-progress { flex: 1; height: 24px; background: var(--surface2); border-radius: 4px; margin: 0 1rem; position: relative; overflow: hidden; }
-  .result-fill { height: 100%; background: var(--accent); border-radius: 4px; display: flex; align-items: center; justify-content: center; }
-  .result-fill span { font-size: 11px; font-weight: 500; color: #fff; }
-  .result-count { font-size: 13px; color: var(--text2); min-width: 40px; text-align: right; }
+    .tab-btn,
+    .view-tab,
+    .btn-secondary,
+    .nav-btn,
+    .opt {
+      background: transparent;
+      border: 0.5px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--text2);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s, transform 0.1s;
+    }
 
-  .trending-item {
-    background: var(--surface);
-    border-left: 4px solid var(--accent);
-    border-radius: var(--radius);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .trending-item.high-agreement { border-left-color: var(--danger); }
-  .trending-item.medium-agreement { border-left-color: var(--warning); }
-  .trending-item.low-agreement { border-left-color: var(--success); }
-  
-  .trending-content { flex: 1; }
-  .trending-question { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 0.25rem; }
-  .trending-answer { font-size: 13px; color: var(--text2); }
-  .trending-stats {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-  .trending-percent {
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--accent);
-    min-width: 50px;
-    text-align: right;
-  }
-  .trending-count {
-    font-size: 12px;
-    color: var(--text3);
-    text-align: right;
-    min-width: 40px;
-  }
+    .tab-btn,
+    .view-tab {
+      padding: 8px 16px;
+      font-size: 13px;
+    }
 
-  .loading { text-align: center; padding: 2rem; }
-  .spinner { display: inline-block; width: 30px; height: 30px; border: 3px solid var(--surface2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+    .tab-btn.active,
+    .view-tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
 
-  .highlight { background: var(--accent-light); border-radius: 4px; padding: 0.25rem 0.5rem; color: var(--accent); font-weight: 500; }
-</style>
+    .tab-btn:hover,
+    .view-tab:hover,
+    .btn-secondary:hover,
+    .nav-btn:hover {
+      background: var(--surface2);
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+      animation: fadeUp 0.3s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card,
+    .stat-card,
+    .question-results {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 13px 20px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 10px 18px;
+      font-size: 14px;
+    }
+
+    .progress-wrap {
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-track {
+      height: 3px;
+      background: var(--surface2);
+      border-radius: 2px;
+    }
+
+    .progress-fill {
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.35s ease;
+    }
+
+    .progress-label {
+      font-size: 12px;
+      color: var(--text3);
+      margin-bottom: 8px;
+    }
+
+    .q-number {
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .q-text {
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+    }
+
+    .opts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .opt {
+      background: var(--surface);
+      padding: 12px 10px;
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .opt:hover {
+      border-color: var(--accent-mid);
+      color: var(--text);
+      background: var(--accent-light);
+    }
+
+    .opt.sel {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .nav-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      padding: 11px;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .nav-btn.fwd {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .nav-btn.fwd:hover {
+      opacity: 0.9;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .msg-ok,
+    .msg-err {
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+    }
+
+    .msg-ok {
+      color: var(--success);
+      background: var(--success-bg);
+    }
+
+    .msg-err {
+      color: #A62C2C;
+      background: #FDE8E8;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--accent);
+      margin: 0.5rem 0;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .view-tabs {
+      margin-bottom: 1.5rem;
+    }
+
+    .result-question {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .result-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      gap: 1rem;
+    }
+
+    .result-label {
+      font-size: 13px;
+      color: var(--text2);
+      width: 170px;
+      flex: 0 0 170px;
+    }
+
+    .result-progress {
+      flex: 1;
+      height: 24px;
+      background: var(--surface2);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-fill {
+      height: 100%;
+      min-width: 0;
+      background: var(--accent);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .result-fill span {
+      font-size: 11px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .result-count {
+      font-size: 13px;
+      color: var(--text2);
+      width: 40px;
+      text-align: right;
+    }
+
+    .trending-item {
+      background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .trending-item.high-agreement {
+      border-left-color: var(--danger);
+    }
+
+    .trending-item.medium-agreement {
+      border-left-color: #D97706;
+    }
+
+    .trending-item.low-agreement {
+      border-left-color: var(--success);
+    }
+
+    .trending-content {
+      flex: 1;
+    }
+
+    .trending-question {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .trending-answer {
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .trending-percent {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--accent);
+      min-width: 50px;
+      text-align: right;
+    }
+
+    .trending-count {
+      font-size: 12px;
+      color: var(--text3);
+      text-align: right;
+      min-width: 40px;
+    }
+
+    .highlight {
+      background: var(--accent-light);
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .empty-state {
+      color: var(--text2);
+      font-size: 14px;
+      padding: 1rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .site-header {
+        flex-direction: column;
+      }
+
+      .dashboard-grid,
+      .opts {
+        grid-template-columns: 1fr;
+      }
+
+      .result-bar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      .result-label,
+      .result-count {
+        width: auto;
+        flex: none;
+      }
+
+      .result-progress {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="page">
+    <div class="site-header">
+      <div class="header-center">
+        <div class="eyebrow">Encuesta Anónima</div>
+        <h1>Presentaciones Efectivas</h1>
+        <div class="sub">Temores al hablar en público</div>
+      </div>
 
-<div class="page">
-  <div class="site-header">
-    <div class="header-center">
-      <div class="eyebrow">Encuesta Anónima</div>
-      <h1>Presentaciones Efectivas</h1>
-      <div class="sub">Temores al hablar en público</div>
-    </div>
-    <div class="tab-buttons" id="tabButtons" style="display: none;">
-      <button class="tab-btn active" onclick="switchTab('survey')">Encuesta</button>
-      <button class="tab-btn" onclick="switchTab('results')">Resultados</button>
-    </div>
-  </div>
-
-  <!-- Screen 1: Survey Start -->
-  <div class="screen active" id="screen1">
-    <div class="card">
-      <h2>Encuesta Anónima</h2>
-      <p>Esta encuesta es completamente anónima. Tus respuestas nos ayudarán a entender mejor los temores al hablar en público y a mejorar las estrategias de comunicación efectiva.</p>
-      <p style="margin-top: 1rem; color: var(--text3); font-size: 13px;">⏱️ Tiempo estimado: 5-7 minutos</p>
-      <button class="btn-primary" onclick="startSurvey()" style="margin-top: 1.5rem;">Comenzar Encuesta</button>
-      <button class="btn-secondary" onclick="switchTab('results')" style="width: 100%; margin-top: 0.75rem;">Ver Resultados</button>
-    </div>
-  </div>
-
-  <!-- Screen 2: Survey Questions -->
-  <div class="screen" id="screen2">
-    <div class="progress-wrap">
-      <div class="progress-label">Progreso: <span id="progressText">1/21</span></div>
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill" style="width: 5%;"></div>
+      <div class="tab-buttons" id="tabButtons" style="display: none;">
+        <button class="tab-btn active" id="surveyTabBtn" type="button" onclick="switchTab('survey')">Encuesta</button>
+        <button class="tab-btn" id="resultsTabBtn" type="button" onclick="switchTab('results')">Resultados</button>
       </div>
     </div>
 
-    <div id="messageContainer"></div>
-
-    <div class="card">
-      <div class="q-number" id="qNumber">Pregunta 1 de 21</div>
-      <div class="q-text" id="qText"></div>
-      <div class="opts" id="optsContainer"></div>
-    </div>
-
-    <div class="nav-row">
-      <button class="nav-btn" onclick="previousQuestion()" id="prevBtn">← Anterior</button>
-      <button class="nav-btn fwd" onclick="nextQuestion()" id="nextBtn">Siguiente →</button>
-    </div>
-  </div>
-
-  <!-- Screen 3: Success -->
-  <div class="screen" id="screen3">
-    <div class="card">
-      <h2>¡Gracias!</h2>
-      <p>Tu respuesta ha sido registrada exitosamente de forma anónima.</p>
-      <div style="margin-top: 1.5rem;">
-        <button class="btn-primary" onclick="goToResults()">Ver Resultados Grupales</button>
-        <button class="btn-secondary" onclick="resetSurvey()" style="width: 100%; margin-top: 0.75rem;">Hacer otra encuesta</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Screen 4: Results Dashboard -->
-  <div class="screen" id="screen4">
-    <div class="card">
-      <h2>Resultados de la Encuesta</h2>
-      <button class="btn-secondary" onclick="switchTab('survey')" style="margin-top: 0.5rem;">← Volver a Encuesta</button>
-    </div>
-
-    <div class="dashboard-grid">
-      <div class="stat-card">
-        <div class="stat-label">Total de Respuestas</div>
-        <div class="stat-number" id="totalResponses">0</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Última Actualización</div>
-        <div class="stat-number" style="font-size: 14px;" id="lastUpdate">-</div>
+    <div class="screen active" id="screen1">
+      <div class="card">
+        <h2>Encuesta Anónima</h2>
+        <p>Esta encuesta es completamente anónima. Tus respuestas nos ayudarán a entender mejor los temores al hablar en público y a mejorar las estrategias de comunicación efectiva.</p>
+        <p style="margin-top: 1rem; color: var(--text3); font-size: 13px;">Tiempo estimado: 5-7 minutos</p>
+        <button class="btn-primary" type="button" onclick="startSurvey()" style="margin-top: 1.5rem;">Comenzar Encuesta</button>
+        <button class="btn-secondary" type="button" onclick="switchTab('results')" style="width: 100%; margin-top: 0.75rem;">Ver Resultados</button>
       </div>
     </div>
 
-    <div class="view-tabs">
-      <button class="view-tab active" onclick="switchResultsView('tendencias')">📊 Tendencias</button>
-      <button class="view-tab" onclick="switchResultsView('completo')">📈 Detalle Completo</button>
+    <div class="screen" id="screen2">
+      <div class="progress-wrap">
+        <div class="progress-label">Progreso: <span id="progressText">1/21</span></div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 5%;"></div>
+        </div>
+      </div>
+
+      <div id="messageContainer"></div>
+
+      <div class="card">
+        <div class="q-number" id="qNumber">Pregunta 1 de 21</div>
+        <div class="q-text" id="qText"></div>
+        <div class="opts" id="optsContainer"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="nav-btn" type="button" onclick="previousQuestion()" id="prevBtn">Anterior</button>
+        <button class="nav-btn fwd" type="button" onclick="nextQuestion()" id="nextBtn">Siguiente</button>
+      </div>
     </div>
 
-    <div id="trendingContainer" style="display: block;"></div>
-    <div id="resultsContainer" style="display: none;"></div>
+    <div class="screen" id="screen3">
+      <div class="card">
+        <h2>¡Gracias!</h2>
+        <p>Tu respuesta ha sido registrada exitosamente de forma anónima.</p>
+        <div style="margin-top: 1.5rem;">
+          <button class="btn-primary" type="button" onclick="goToResults()">Ver Resultados Grupales</button>
+          <button class="btn-secondary" type="button" onclick="resetSurvey()" style="width: 100%; margin-top: 0.75rem;">Hacer otra encuesta</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen4">
+      <div class="card">
+        <h2>Resultados de la Encuesta</h2>
+        <button class="btn-secondary" type="button" onclick="switchTab('survey')" style="margin-top: 0.5rem;">Volver a Encuesta</button>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total de Respuestas</div>
+          <div class="stat-number" id="totalResponses">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Última Actualización</div>
+          <div class="stat-number" style="font-size: 14px;" id="lastUpdate">-</div>
+        </div>
+      </div>
+
+      <div class="view-tabs">
+        <button class="view-tab active" type="button" onclick="switchResultsView('tendencias', this)">Tendencias</button>
+        <button class="view-tab" type="button" onclick="switchResultsView('completo', this)">Detalle Completo</button>
+      </div>
+
+      <div id="trendingContainer" style="display: block;"></div>
+      <div id="resultsContainer" style="display: none;"></div>
+    </div>
   </div>
-</div>
 
-<script>
-// ============================================
-// STATE MANAGEMENT
-// ============================================
-let currentQuestion = 0;
-let answers = [];
-let questions = [];
-let database = null;
-let respondentId = '';
-let allResponses = [];
-let currentResultsView = 'tendencias';
-
-// GENERATE ANONYMOUS ID
-function generateAnonymousId() {
-  return 'resp_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-}
-
-// UI FUNCTIONS
-function showScreen(screenId) {
-  document.querySelectorAll('.screen').forEach(screen => {
-    screen.classList.remove('active');
-  });
-  document.getElementById(screenId).classList.add('active');
-}
-
-function switchTab(tab) {
-  if (tab === 'survey') {
-    showScreen('screen1');
-    document.getElementById('tabButtons').style.display = 'none';
-  } else if (tab === 'results') {
-    showScreen('screen4');
-    document.getElementById('tabButtons').style.display = 'flex';
-    loadAndDisplayResults();
-  }
-}
-
-function switchResultsView(view) {
-  currentResultsView = view;
-  document.querySelectorAll('.view-tab').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  if (view === 'tendencias') {
-    document.getElementById('trendingContainer').style.display = 'block';
-    document.getElementById('resultsContainer').style.display = 'none';
-  } else {
-    document.getElementById('trendingContainer').style.display = 'none';
-    document.getElementById('resultsContainer').style.display = 'block';
-  }
-}
-
-function showMessage(text, type = 'ok') {
-  const container = document.getElementById('messageContainer');
-  container.innerHTML = `<div class="msg-${type}">${text}</div>`;
-  setTimeout(() => {
-    container.innerHTML = '';
-  }, 3000);
-}
-
-function renderQuestion() {
-  const q = questions[currentQuestion];
-  document.getElementById('qNumber').textContent = `Pregunta ${currentQuestion + 1} de ${questions.length}`;
-  document.getElementById('qText').textContent = q.text;
-  document.getElementById('progressText').textContent = `${currentQuestion + 1}/${questions.length}`;
-  document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
-
-  const optsContainer = document.getElementById('optsContainer');
-  optsContainer.innerHTML = '';
-  q.options.forEach((opt, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'opt';
-    if (answers[currentQuestion] === idx) {
-      btn.classList.add('sel');
-    }
-    btn.textContent = opt;
-    btn.onclick = () => selectOption(idx);
-    optsContainer.appendChild(btn);
-  });
-
-  document.getElementById('prevBtn').disabled = currentQuestion === 0;
-  document.getElementById('nextBtn').disabled = answers[currentQuestion] === undefined;
-}
-
-function selectOption(idx) {
-  answers[currentQuestion] = idx;
-  renderQuestion();
-}
-
-// SURVEY FLOW FUNCTIONS
-function startSurvey() {
-  respondentId = generateAnonymousId();
-  currentQuestion = 0;
-  answers = [];
-  showScreen('screen2');
-  renderQuestion();
-}
-
-function nextQuestion() {
-  if (answers[currentQuestion] === undefined) {
-    showMessage('Por favor selecciona una opción', 'err');
-    return;
-  }
-  if (currentQuestion < questions.length - 1) {
-    currentQuestion++;
-    renderQuestion();
-  } else {
-    submitSurvey();
-  }
-}
-
-function previousQuestion() {
-  if (currentQuestion > 0) {
-    currentQuestion--;
-    renderQuestion();
-  }
-}
-
-async function submitSurvey() {
-  try {
-    const timestamp = new Date().toISOString();
-    const responseData = {
-      respondentId: respondentId,
-      timestamp: timestamp,
-      answers: answers.map((idx, qIdx) => ({
-        questionId: qIdx + 1,
-        question: questions[qIdx].text,
-        answerIndex: idx,
-        answer: questions[qIdx].options[idx]
-      }))
-    };
-
-    // Save to Firebase Realtime Database
-    const responsesRef = window.db.ref(window.db.database, 'responses');
-    const newResponseRef = window.db.push(responsesRef);
-    await window.db.set(newResponseRef, responseData);
-
-    showScreen('screen3');
-    showMessage('¡Encuesta guardada exitosamente!', 'ok');
-
-  } catch (error) {
-    console.error('Error al guardar la encuesta:', error);
-    showMessage('Error al guardar. Intenta de nuevo.', 'err');
-  }
-}
-
-function goToResults() {
-  switchTab('results');
-}
-
-function resetSurvey() {
-  currentQuestion = 0;
-  answers = [];
-  respondentId = '';
-  showScreen('screen1');
-  document.getElementById('tabButtons').style.display = 'none';
-}
-
-// RESULTS FUNCTIONS
-async function loadAndDisplayResults() {
-  try {
-    const responsesRef = window.db.ref(window.db.database, 'responses');
-    const snapshot = await window.db.get(responsesRef);
-    
-    if (snapshot.exists()) {
-      const data = snapshot.val();
-      // Convertir objeto en array - cada entrada es una respuesta única
-      allResponses = Object.values(data);
-    } else {
-      allResponses = [];
-    }
-
-    displayResults();
-  } catch (error) {
-    console.error('Error al cargar resultados:', error);
-    document.getElementById('trendingContainer').innerHTML = '<div class="card"><p>Error al cargar los resultados. Intenta más tarde.</p></div>';
-  }
-}
-
-function displayResults() {
-  document.getElementById('totalResponses').textContent = allResponses.length;
-  document.getElementById('lastUpdate').textContent = allResponses.length > 0 
-    ? new Date(allResponses[allResponses.length - 1].timestamp).toLocaleString('es-ES', { 
-        month: 'short', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      })
-    : 'Sin datos';
-
-  displayTrendingResults();
-  displayDetailedResults();
-}
-
-function displayTrendingResults() {
-  const trendingContainer = document.getElementById('trendingContainer');
-  trendingContainer.innerHTML = '';
-  
-  const trends = [];
-  
-  // Recopilar tendencias para TODAS las preguntas
-  questions.forEach((question, qIdx) => {
-    const questionResults = calculateQuestionResults(qIdx);
-    let maxCount = 0;
-    let maxIdx = 0;
-    
-    question.options.forEach((_, optIdx) => {
-      const count = questionResults[optIdx] || 0;
-      if (count > maxCount) {
-        maxCount = count;
-        maxIdx = optIdx;
+  <script>
+    const QUESTIONS = [
+      {
+        text: "Me pongo muy ansioso/a cuando hablo frente a un pequeño grupo (de tres a diez personas)",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Me preocupo cuando tengo que hablar con extraños",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Mi corazón se acelera cuando pienso que tengo que hablar frente a otros",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Por lo general me pongo nervioso/a cuando hablo con mi jefe o con alguien de autoridad",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "La mayor parte del tiempo evito dar un discurso o una presentación",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Me avergüenza cuando otros me observan al hablar",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Con frecuencia evito contar historias a grupos en fiestas y otras reuniones sociales",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "No me ofrezco como voluntaria/o para dar una presentación",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Me preocupa que mi voz pueda sonar extraña o de que pueda temblar cuando esté hablando en público",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "No hablaría en público a menos que sea absolutamente necesario",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Me preocupa que vaya a olvidar lo que debo decir durante una presentación",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "He tenido consecuencias negativas en el trabajo/en los estudios como no obtener un ascenso o puntos a mi favor debido a que evito hablar en público",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Enfrentar a una gran audiencia es uno de mis más grandes temores",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Cuando hablo pienso con certeza que otras personas me están evaluando negativamente",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Trato de evitar contestar preguntas cuando estoy haciendo una presentación",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Por lo general, no hablo en reuniones",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Si no estoy 100% seguro/a de una respuesta, no digo nada",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Cuando hablo en público, pienso que con seguridad voy a hacer el ridículo o que la gente me perderá el respeto",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Cuando me dirijo a un grupo, por lo general, siento que cambia mi temperatura corporal, percibo una presión en el estómago, sudo o me ruborizo",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Pienso que es mejor si evito hablar en público para que la gente no note mi nerviosismo",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      },
+      {
+        text: "Considero que no poseo las habilidades requeridas para dirigirme a un público de manera efectiva",
+        options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
       }
-    });
-    
-    if (maxCount > 0) {
-      const percentage = Math.round((maxCount / allResponses.length) * 100);
-      trends.push({
-        questionNum: qIdx + 1,
-        question: question.text,
-        answer: question.options[maxIdx],
-        count: maxCount,
-        percentage: percentage,
-        isAgreement: maxIdx >= 3 // Si está en "De acuerdo" o "Totalmente de acuerdo"
+    ];
+
+    let currentQuestion = 0;
+    let answers = [];
+    let respondentId = "";
+    let allResponses = [];
+    let currentResultsView = "tendencias";
+
+    function generateAnonymousId() {
+      return "resp_" + Math.random().toString(36).slice(2, 11) + "_" + Date.now();
+    }
+
+    function showScreen(screenId) {
+      document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+      });
+      document.getElementById(screenId).classList.add("active");
+    }
+
+    function setActiveTab(tab) {
+      document.getElementById("surveyTabBtn").classList.toggle("active", tab === "survey");
+      document.getElementById("resultsTabBtn").classList.toggle("active", tab === "results");
+    }
+
+    function switchTab(tab) {
+      if (tab === "survey") {
+        showScreen("screen1");
+        setActiveTab("survey");
+        document.getElementById("tabButtons").style.display = "none";
+        return;
+      }
+
+      showScreen("screen4");
+      setActiveTab("results");
+      document.getElementById("tabButtons").style.display = "flex";
+      loadAndDisplayResults();
+    }
+
+    function switchResultsView(view, button) {
+      currentResultsView = view;
+
+      document.querySelectorAll(".view-tab").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      if (button) {
+        button.classList.add("active");
+      }
+
+      document.getElementById("trendingContainer").style.display = view === "tendencias" ? "block" : "none";
+      document.getElementById("resultsContainer").style.display = view === "completo" ? "block" : "none";
+    }
+
+    function showMessage(text, type = "ok") {
+      const container = document.getElementById("messageContainer");
+      container.innerHTML = `<div class="msg-${type}">${text}</div>`;
+
+      setTimeout(() => {
+        container.innerHTML = "";
+      }, 3000);
+    }
+
+    function renderQuestion() {
+      const question = QUESTIONS[currentQuestion];
+
+      document.getElementById("qNumber").textContent = `Pregunta ${currentQuestion + 1} de ${QUESTIONS.length}`;
+      document.getElementById("qText").textContent = question.text;
+      document.getElementById("progressText").textContent = `${currentQuestion + 1}/${QUESTIONS.length}`;
+      document.getElementById("progressFill").style.width = `${((currentQuestion + 1) / QUESTIONS.length) * 100}%`;
+
+      const optsContainer = document.getElementById("optsContainer");
+      optsContainer.innerHTML = "";
+
+      question.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.className = "opt";
+        button.type = "button";
+        button.textContent = option;
+
+        if (answers[currentQuestion] === index) {
+          button.classList.add("sel");
+        }
+
+        button.onclick = () => selectOption(index);
+        optsContainer.appendChild(button);
+      });
+
+      document.getElementById("prevBtn").disabled = currentQuestion === 0;
+      document.getElementById("nextBtn").disabled = answers[currentQuestion] === undefined;
+      document.getElementById("nextBtn").textContent = currentQuestion === QUESTIONS.length - 1 ? "Enviar" : "Siguiente";
+    }
+
+    function selectOption(index) {
+      answers[currentQuestion] = index;
+      renderQuestion();
+    }
+
+    function startSurvey() {
+      respondentId = generateAnonymousId();
+      currentQuestion = 0;
+      answers = [];
+      showScreen("screen2");
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      if (answers[currentQuestion] === undefined) {
+        showMessage("Por favor selecciona una opción", "err");
+        return;
+      }
+
+      if (currentQuestion < QUESTIONS.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+        return;
+      }
+
+      submitSurvey();
+    }
+
+    function previousQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    }
+
+    async function submitSurvey() {
+      if (!window.db) {
+        showMessage("Firebase todavía está cargando. Intenta nuevamente en unos segundos.", "err");
+        return;
+      }
+
+      try {
+        document.getElementById("nextBtn").disabled = true;
+
+        const responseData = {
+          respondentId,
+          timestamp: new Date().toISOString(),
+          answers: answers.map((answerIndex, questionIndex) => ({
+            questionId: questionIndex + 1,
+            question: QUESTIONS[questionIndex].text,
+            answerIndex,
+            answer: QUESTIONS[questionIndex].options[answerIndex]
+          }))
+        };
+
+        const responsesRef = window.db.ref(window.db.database, "responses");
+        const newResponseRef = window.db.push(responsesRef);
+        await window.db.set(newResponseRef, responseData);
+
+        showScreen("screen3");
+      } catch (error) {
+        console.error("Error al guardar la encuesta:", error);
+        showMessage("Error al guardar. Intenta de nuevo.", "err");
+        renderQuestion();
+      }
+    }
+
+    function goToResults() {
+      switchTab("results");
+    }
+
+    function resetSurvey() {
+      currentQuestion = 0;
+      answers = [];
+      respondentId = "";
+      showScreen("screen1");
+      document.getElementById("tabButtons").style.display = "none";
+    }
+
+    async function loadAndDisplayResults() {
+      if (!window.db) {
+        document.getElementById("trendingContainer").innerHTML = '<div class="card"><p>Firebase todavía está cargando. Espera unos segundos y vuelve a intentar.</p></div>';
+        return;
+      }
+
+      try {
+        const responsesRef = window.db.ref(window.db.database, "responses");
+        const snapshot = await window.db.get(responsesRef);
+
+        if (!snapshot.exists()) {
+          allResponses = [];
+          displayResults();
+          return;
+        }
+
+        const data = snapshot.val();
+        const responses = Object.values(data)
+          .filter(isValidCompletedResponse)
+          .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+        const uniqueResponses = new Map();
+        responses.forEach(response => {
+          uniqueResponses.set(response.respondentId, response);
+        });
+
+        allResponses = Array.from(uniqueResponses.values());
+        displayResults();
+      } catch (error) {
+        console.error("Error al cargar resultados:", error);
+        document.getElementById("trendingContainer").innerHTML = '<div class="card"><p>Error al cargar los resultados. Intenta más tarde.</p></div>';
+      }
+    }
+
+    function isValidCompletedResponse(response) {
+      if (!response || typeof response !== "object") return false;
+      if (!response.respondentId || typeof response.respondentId !== "string") return false;
+      if (!response.timestamp || Number.isNaN(new Date(response.timestamp).getTime())) return false;
+      if (!Array.isArray(response.answers) || response.answers.length !== QUESTIONS.length) return false;
+
+      return response.answers.every((answer, index) => {
+        return answer &&
+          answer.questionId === index + 1 &&
+          Number.isInteger(answer.answerIndex) &&
+          answer.answerIndex >= 0 &&
+          answer.answerIndex < QUESTIONS[index].options.length;
       });
     }
-  });
 
-  // Ordenar por número de pregunta (1, 2, 3... 21)
-  trends.sort((a, b) => a.questionNum - b.questionNum);
+    function displayResults() {
+      document.getElementById("totalResponses").textContent = allResponses.length;
+      document.getElementById("lastUpdate").textContent = allResponses.length > 0
+        ? new Date(allResponses[allResponses.length - 1].timestamp).toLocaleString("es-PE", {
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+          })
+        : "Sin datos";
 
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = '<h3 style="margin-bottom: 1.5rem; font-family: DM Serif Display; font-size: 18px;">Respuestas Más Comunes</h3>';
-  
-  trends.forEach(trend => {
-    const agreementClass = trend.isAgreement ? 'high-agreement' : (trend.percentage > 50 ? 'medium-agreement' : 'low-agreement');
-    
-    const item = document.createElement('div');
-    item.className = `trending-item ${agreementClass}`;
-    item.innerHTML = `
-      <div class="trending-content">
-        <div class="trending-question">P${trend.questionNum}. ${trend.question.substring(0, 60)}...</div>
-        <div class="trending-answer"><span class="highlight">${trend.answer}</span></div>
-      </div>
-      <div class="trending-stats">
-        <div>
-          <div class="trending-percent">${trend.percentage}%</div>
-          <div class="trending-count">${trend.count} ${trend.count === 1 ? 'resp.' : 'resps.'}</div>
-        </div>
-      </div>
-    `;
-    card.appendChild(item);
-  });
+      displayTrendingResults();
+      displayDetailedResults();
 
-  trendingContainer.appendChild(card);
-}
-
-function displayDetailedResults() {
-  const resultsContainer = document.getElementById('resultsContainer');
-  resultsContainer.innerHTML = '';
-
-  questions.forEach((question, qIdx) => {
-    const questionResults = calculateQuestionResults(qIdx);
-    const resultDiv = document.createElement('div');
-    resultDiv.className = 'question-results';
-    
-    let resultsHTML = `<div class="result-question">P${qIdx + 1}. ${question.text}</div>`;
-    
-    question.options.forEach((option, optIdx) => {
-      const count = questionResults[optIdx] || 0;
-      const percentage = allResponses.length > 0 ? Math.round((count / allResponses.length) * 100) : 0;
-      
-      resultsHTML += `
-        <div class="result-bar">
-          <div class="result-label">${option}</div>
-          <div class="result-progress">
-            <div class="result-fill" style="width: ${percentage}%">
-              ${percentage > 10 ? `<span>${percentage}%</span>` : ''}
-            </div>
-          </div>
-          <div class="result-count">${count}</div>
-        </div>
-      `;
-    });
-    
-    resultDiv.innerHTML = resultsHTML;
-    resultsContainer.appendChild(resultDiv);
-  });
-}
-
-function calculateQuestionResults(questionIdx) {
-  const results = {};
-  questions[questionIdx].options.forEach((_, optIdx) => {
-    results[optIdx] = 0;
-  });
-
-  allResponses.forEach(response => {
-    if (response.answers && Array.isArray(response.answers)) {
-      const answer = response.answers.find(a => a.questionId === questionIdx + 1);
-      if (answer !== undefined) {
-        results[answer.answerIndex]++;
+      if (currentResultsView === "tendencias") {
+        switchResultsView("tendencias", document.querySelector(".view-tab"));
       }
     }
-  });
 
-  return results;
-}
+    function displayTrendingResults() {
+      const trendingContainer = document.getElementById("trendingContainer");
+      trendingContainer.innerHTML = "";
 
-// INITIALIZATION
-document.addEventListener('DOMContentLoaded', () => {
-  showScreen('screen1');
-});
-</script>
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = '<h2>Respuestas Más Comunes</h2>';
 
-<script type="module">
-// ============================================
-// FIREBASE INITIALIZATION
-// ============================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, push, set, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+      if (allResponses.length === 0) {
+        card.innerHTML += '<p class="empty-state">Todavía no hay encuestas completas registradas.</p>';
+        trendingContainer.appendChild(card);
+        return;
+      }
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCtp56Ven4Ye5EURPJk3_xTjbwt9Na_ry4",
-  authDomain: "comunicar-en-publico.firebaseapp.com",
-  projectId: "comunicar-en-publico",
-  storageBucket: "comunicar-en-publico.firebasestorage.app",
-  messagingSenderId: "200917486387",
-  appId: "1:200917486387:web:83f3db599b4ef005e34c46"
-};
+      QUESTIONS.forEach((question, questionIndex) => {
+        const questionResults = calculateQuestionResults(questionIndex);
+        let maxCount = 0;
+        let maxIndex = 0;
 
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+        question.options.forEach((_, optionIndex) => {
+          const count = questionResults[optionIndex] || 0;
+          if (count > maxCount) {
+            maxCount = count;
+            maxIndex = optionIndex;
+          }
+        });
 
-// Expose Firebase functions globally
-window.db = { ref, push, set, get, database };
+        const percentage = Math.round((maxCount / allResponses.length) * 100);
+        const isAgreement = maxIndex >= 3;
+        const agreementClass = isAgreement ? "high-agreement" : (percentage > 50 ? "medium-agreement" : "low-agreement");
 
-// ============================================
-// SURVEY QUESTIONS (21 preguntas)
-// ============================================
-window.questions = [
-  {
-    text: "1. Me pongo muy ansioso/a cuando hablo frente a un pequeño grupo (de tres a diez personas)",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "2. Me preocupo cuando tengo que hablar con extraños",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "3. Mi corazón se acelera cuando pienso que tengo que hablar frente a otros",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "4. Por lo general me pongo nervioso/a cuando hablo con mi jefe o con alguien de autoridad",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "5. La mayor parte del tiempo evito dar un discurso o una presentación",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "6. Me avergüenza cuando otros me observan al hablar",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "7. Con frecuencia evito contar historias a grupos en fiestas y otras reuniones sociales",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "8. No me ofrezco como voluntaria/o para dar una presentación",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "9. Me preocupa que mi voz pueda sonar extraña o de que pueda temblar cuando esté hablando en público",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "10. No hablaría en público a menos que sea absolutamente necesario",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "11. Me preocupa que vaya a olvidar lo que debo decir durante una presentación",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "12. He tenido consecuencias negativas en el trabajo/en los estudios como no obtener un ascenso o puntos a mi favor debido a que evito hablar en público",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "13. Enfrentar a una gran audiencia es uno de mis más grandes temores",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "14. Cuando hablo pienso con certeza que otras personas me están evaluando negativamente",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "15. Trato de evitar contestar preguntas cuando estoy haciendo una presentación",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "16. Por lo general, no hablo en reuniones",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "17. Si no estoy 100% seguro/a de una respuesta, no digo nada",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "18. Cuando hablo en público, pienso que con seguridad voy a hacer el ridículo o que la gente me perderá el respeto",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "19. Cuando me dirijo a un grupo, por lo general, siento que cambia mi temperatura corporal, percibo una presión en el estómago, sudo o me ruborizo",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "20. Pienso que es mejor si evito hablar en público para que la gente no note mi nerviosismo",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  },
-  {
-    text: "21. Considero que no poseo los habilidades requeridas para dirigirme a un público de manera efectiva",
-    options: ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
-  }
-];
+        const item = document.createElement("div");
+        item.className = `trending-item ${agreementClass}`;
+        item.innerHTML = `
+          <div class="trending-content">
+            <div class="trending-question">P${questionIndex + 1}. ${question.text}</div>
+            <div class="trending-answer"><span class="highlight">${question.options[maxIndex]}</span></div>
+          </div>
+          <div>
+            <div class="trending-percent">${percentage}%</div>
+            <div class="trending-count">${maxCount} ${maxCount === 1 ? "resp." : "resps."}</div>
+          </div>
+        `;
 
-// Initialize questions
-questions = window.questions;
-</script>
+        card.appendChild(item);
+      });
 
+      trendingContainer.appendChild(card);
+    }
+
+    function displayDetailedResults() {
+      const resultsContainer = document.getElementById("resultsContainer");
+      resultsContainer.innerHTML = "";
+
+      if (allResponses.length === 0) {
+        resultsContainer.innerHTML = '<div class="card"><p class="empty-state">Todavía no hay encuestas completas registradas.</p></div>';
+        return;
+      }
+
+      QUESTIONS.forEach((question, questionIndex) => {
+        const questionResults = calculateQuestionResults(questionIndex);
+        const resultDiv = document.createElement("div");
+        resultDiv.className = "question-results";
+
+        let resultsHTML = `<div class="result-question">P${questionIndex + 1}. ${question.text}</div>`;
+
+        question.options.forEach((option, optionIndex) => {
+          const count = questionResults[optionIndex] || 0;
+          const percentage = Math.round((count / allResponses.length) * 100);
+
+          resultsHTML += `
+            <div class="result-bar">
+              <div class="result-label">${option}</div>
+              <div class="result-progress">
+                <div class="result-fill" style="width: ${percentage}%">
+                  ${percentage > 10 ? `<span>${percentage}%</span>` : ""}
+                </div>
+              </div>
+              <div class="result-count">${count}</div>
+            </div>
+          `;
+        });
+
+        resultDiv.innerHTML = resultsHTML;
+        resultsContainer.appendChild(resultDiv);
+      });
+    }
+
+    function calculateQuestionResults(questionIndex) {
+      const results = {};
+
+      QUESTIONS[questionIndex].options.forEach((_, optionIndex) => {
+        results[optionIndex] = 0;
+      });
+
+      allResponses.forEach(response => {
+        const answer = response.answers.find(item => item.questionId === questionIndex + 1);
+
+        if (
+          answer &&
+          Number.isInteger(answer.answerIndex) &&
+          results[answer.answerIndex] !== undefined
+        ) {
+          results[answer.answerIndex]++;
+        }
+      });
+
+      return results;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      showScreen("screen1");
+    });
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getDatabase, ref, push, set, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCtp56Ven4Ye5EURPJk3_xTjbwt9Na_ry4",
+      authDomain: "comunicar-en-publico.firebaseapp.com",
+      databaseURL: "https://comunicar-en-publico-default-rtdb.firebaseio.com",
+      projectId: "comunicar-en-publico",
+      storageBucket: "comunicar-en-publico.firebasestorage.app",
+      messagingSenderId: "200917486387",
+      appId: "1:200917486387:web:83f3db599b4ef005e34c46"
+    };
+
+    try {
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      window.db = { ref, push, set, get, database };
+    } catch (error) {
+      console.error("Error al inicializar Firebase:", error);
+      window.db = null;
+    }
+  </script>
 </body>
 </html>
